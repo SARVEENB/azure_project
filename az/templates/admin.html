@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIRTUAL SCIENCE EXPO</title>
+    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="img/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+25&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style1.css') }}">
+
+    <style>
+        .main-content > section {
+            display: none;
+        }
+        #dashboard {
+            display: block;
+        }
+        #edit-profile-modal, #upload-project-form, #upload-form, #manage-content-table {
+            display: none;
+        }
+       
+        
+    </style>
+</head>
+<body>
+    <div class="user_welcome">
+        <h1 class="well">Welcome <span id="username"></span>!</h1>
+        <h3 class="well" id="thank-you-message">Thank You For Being Part In Our fascinating And Future Path To A Scientific world!</h3>
+        <div class="admin-container">
+            <nav class="sidebar">
+                <img id="admin-logo" src="{{ url_for('static', filename='logo.jpg') }}" alt="logo">
+                <ul>
+                    <li><a href="#" data-target="#dashboard">Dashboard</a></li>
+                    <li><a href="#" data-target="#projects">Project Management</a></li>
+                    <li><a href="#" data-target="#content">Content Management</a></li>
+                    <li><a href="#" id="logout">Logout</a></li>
+                </ul>
+            </nav>
+            <div class="main-content">
+                <section id="dashboard">
+                    <h1>Dashboard</h1>
+                    <div class="profile">
+                        <div class="profile-picture">
+                            <img id="profile-img" src="default-profile.png" alt="Profile Picture">
+                        </div>
+                        <div class="profile-details">
+                            <h2 id="profile-name">User Name</h2>
+                            <p id="profile-email">user@example.com</p>
+                            <button id="edit-profile">Edit Profile</button>
+                        </div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <h2>Total Projects</h2>
+                            <p id="total-projects">0</p>
+                        </div>
+                        <div class="stat-item">
+                            <h2>Saved Projects</h2>
+                            <p id="Saved-projects">0</p>
+                        </div>
+                        <div class="stat-item">
+                            <h2>Pending Projects</h2>
+                            <p id="pending-projects">0</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Modal for editing profile -->
+                <div id="edit-profile-modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>Edit Profile</h2>
+                        <form id="edit-profile-form">
+                            <label for="profile-img-input">Profile Picture:</label>
+                            <input type="file" id="profile-img-input" accept="image/*">
+                            <br>
+                            <label for="profile-name-input">Name:</label>
+                            <input type="text" id="profile-name-input">
+                            <br>
+                            <label for="profile-email-input">Email:</label>
+                            <input type="email" id="profile-email-input">
+                            <br>
+                            <button type="submit">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+                <section id="projects">
+                    <h1>Project Management</h1>
+                    <table id="projects-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Owner</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Project rows will be dynamically added here -->
+                        </tbody>
+                    </table>
+                    <button id="upload-project-btn">Upload Project</button>
+                    <div id="upload-project-form">
+                        <h2>Upload New Project</h2>
+                        <form id="upload-project-form-data">
+                            <label for="project-name">Project Name:</label>
+                            <input type="text" id="project-name" required>
+                            <br>
+                            <label for="project-owner">Owner:</label>
+                            <input type="text" id="project-owner" required>
+                            <br>
+                            <label for="content-file">Select File:</label>
+                            <input type="file" id="content-file" accept=".pdf,.doc,.docx,.txt" required>
+                            <button type="submit">Upload</button>
+                        </form>
+                    </div>
+                </section>
+
+                <section id="content">
+                    <h1>Content Management</h1>
+                    <div class="content-options">
+                        <button id="upload-content">Upload Content</button>
+                        <button id="manage-content">Manage Content</button>
+                    </div>
+                    <div id="upload-form">
+                        <h2>Upload New Content</h2>
+                        <form id="upload-content-form">
+                            <label for="content-file">Select File:</label>
+                            <input type="file" id="content-file" accept=".pdf,.doc,.docx,.txt">
+                            <br>
+                            <label for="content-title">Title:</label>
+                            <input type="text" id="content-title">
+                            <br>
+                            <label for="content-description">Description:</label>
+                            <textarea id="content-description"></textarea>
+                            <br>
+                            <button type="submit">Upload</button>
+                        </form>
+                    </div>
+                    <div id="manage-content-table">
+                        <h2>Manage Content</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Type</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="content-tbody">
+                                <!-- Content items will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    <script>
+       document.addEventListener("DOMContentLoaded", function() {
+        // Retrieve username from login information
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username');
+
+        if (username) {
+            // Set username in welcome message
+            document.getElementById("username").textContent = username;
+
+            // Set username in profile
+            document.getElementById("profile-name").textContent = username;
+        }
+
+        
+
+
+            // Show dashboard by default
+            document.getElementById("dashboard").style.display = "block";
+
+            // Show/hide sections based on sidebar navigation
+            document.querySelectorAll('.sidebar ul li a').forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const targetSection = document.querySelector(this.getAttribute('data-target'));
+                    document.querySelectorAll('.main-content > section').forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    targetSection.style.display = 'block';
+                });
+            });
+
+            // Edit Profile Modal
+            const editProfileButton = document.getElementById("edit-profile");
+            const editProfileModal = document.getElementById("edit-profile-modal");
+            const closeModalButton = document.querySelector(".close");
+
+            editProfileButton.addEventListener("click", function() {
+                editProfileModal.style.display = "block";
+            });
+
+            closeModalButton.addEventListener("click", function() {
+                editProfileModal.style.display = "none";
+            });
+
+            window.addEventListener("click", function(event) {
+                if (event.target == editProfileModal) {
+                    editProfileModal.style.display = "none";
+                }
+            });
+
+            // Save profile changes
+            document.getElementById("edit-profile-form").addEventListener("submit", function(event) {
+                event.preventDefault();
+                const profileNameInput = document.getElementById("profile-name-input").value;
+                const profileEmailInput = document.getElementById("profile-email-input").value;
+                const profileImgInput = document.getElementById("profile-img-input").files[0];
+
+                if (profileNameInput) {
+                    localStorage.setItem("profile-name", profileNameInput);
+                    document.getElementById("profile-name").textContent = profileNameInput;
+                }
+                if (profileEmailInput) {
+                    localStorage.setItem("profile-email", profileEmailInput);
+                    document.getElementById("profile-email").textContent = profileEmailInput;
+                }
+                if (profileImgInput) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        localStorage.setItem("profile-img", e.target.result);
+                        document.getElementById("profile-img").src = e.target.result;
+                    }
+                    reader.readAsDataURL(profileImgInput);
+                }
+
+                editProfileModal.style.display = "none";
+            });
+
+            // Logout functionality
+            const logoutButton = document.getElementById("logout");
+            logoutButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                window.location.href = "/s1/api/signup"; // Redirect to logout endpoint
+            });
+
+            // Upload project form toggle
+            const uploadProjectBtn = document.getElementById("upload-project-btn");
+            const uploadProjectForm = document.getElementById("upload-project-form");
+
+            uploadProjectBtn.addEventListener("click", function() {
+                uploadProjectForm.style.display = "block";
+            });
+
+            // Handle project upload form submission
+            document.getElementById("upload-project-form-data").addEventListener("submit", function(event) {
+                event.preventDefault();
+                const projectName = document.getElementById("project-name").value;
+                const projectOwner = document.getElementById("project-owner").value;
+                const contentFile = document.getElementById("content-file").files[0];
+
+                const newProject = {
+                    id: Date.now(),
+                    name: projectName,
+                    owner: projectOwner,
+                    fileName: contentFile.name
+                };
+
+                // Save project data to localStorage
+                let projects = JSON.parse(localStorage.getItem("projects")) || [];
+                projects.push(newProject);
+                localStorage.setItem("projects", JSON.stringify(projects));
+
+                // Update the project table
+                addProjectToTable(newProject);
+
+                uploadProjectForm.style.display = "none";
+                document.getElementById("upload-project-form-data").reset();
+            });
+
+            // Load projects from localStorage and populate the table
+            const projects = JSON.parse(localStorage.getItem("projects")) || [];
+            projects.forEach(project => {
+                addProjectToTable(project);
+            });
+
+            function addProjectToTable(project) {
+                const projectTableBody = document.querySelector("#projects-table tbody");
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${project.id}</td>
+                    <td>${project.name}</td>
+                    <td>${project.owner}</td>
+                    <td>
+                        <button class="view-btn" onclick="viewFile('${project.fileName}')">View</button>
+                        <button class="edit-btn" onclick="editProject(${project.id})">Edit</button>
+                        <button class="delete-btn" onclick="deleteProject(${project.id})">Delete</button>
+                    </td>
+                `;
+                projectTableBody.appendChild(row);
+            }
+
+            // View project file
+            window.viewFile = function(fileName) {
+                alert(`Viewing file: ${fileName}`);
+            };
+
+            // Edit project
+            window.editProject = function(projectId) {
+                alert(`Editing project ID: ${projectId}`);
+            };
+
+            // Delete project
+            window.deleteProject = function(projectId) {
+                let projects = JSON.parse(localStorage.getItem("projects")) || [];
+                projects = projects.filter(project => project.id !== projectId);
+                localStorage.setItem("projects", JSON.stringify(projects));
+
+                // Remove project row from table
+                const projectTableBody = document.querySelector("#projects-table tbody");
+                const rows = projectTableBody.querySelectorAll("tr");
+                rows.forEach(row => {
+                    if (row.querySelector("td").textContent == projectId) {
+                        projectTableBody.removeChild(row);
+                    }
+                });
+            };
+
+            // Upload content form toggle
+            const uploadContentBtn = document.getElementById("upload-content");
+            const manageContentBtn = document.getElementById("manage-content");
+            const uploadForm = document.getElementById("upload-form");
+            const manageContentTable = document.getElementById("manage-content-table");
+
+            uploadContentBtn.addEventListener("click", function() {
+                uploadForm.style.display = "block";
+                manageContentTable.style.display = "none";
+            });
+
+            manageContentBtn.addEventListener("click", function() {
+                manageContentTable.style.display = "block";
+                uploadForm.style.display = "none";
+            });
+        })
+
+            // Upload content form submission handler
+            document.getElementById("upload-content-form").addEventListener("submit", function(event) {
+                event.preventDefault();
+                const contentFile = document.getElementById("content-file").files[0];
+                const contentTitle = document.getElementById("content-title").value;
+                const contentDescription = document.getElementById("content-description").value;
+
+                if (contentFile && contentTitle && contentDescription) {
+                    const newContent = {
+                        id: Date.now(),
+                        title: contentTitle,
+                        description: contentDescription,
+                        fileName: contentFile.name
+                    };
+
+                    // Save content data to localStorage
+                    let contents = JSON.parse(localStorage.getItem("contents")) || [];
+                    contents.push(newContent);
+                    localStorage.setItem("contents", JSON.stringify(contents));
+
+                    // Update the content table
+                    addContentToTable(newContent);
+
+                    // Reset form fields
+                    document.getElementById("content-file").value = ""; // Clear the file input
+                    document.getElementById("content-title").value = "";
+                    document.getElementById("content-description").value = "";
+                } else {
+                    alert("Please fill out all the fields.");
+                }
+            });
+
+// Load contents from localStorage and populate the table
+const contents = JSON.parse(localStorage.getItem("contents")) || [];
+contents.forEach(content => {
+    addContentToTable(content);
+});
+
+function addContentToTable(content) {
+    const contentTableBody = document.querySelector("#manage-content-table tbody");
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td>${content.title}</td>
+        <td>${content.description}</td>
+        <td>File</td>
+        <td>
+            <button class="view-btn" onclick="viewFile('${content.fileName}')">View</button>
+            <button class="edit-btn" onclick="editContent(${content.id})">Edit</button>
+            <button class="delete-btn" onclick="deleteContent(${content.id})">Delete</button>
+        </td>
+    `;
+    contentTableBody.appendChild(row);
+}
+
+// View content file
+window.viewFile = function(fileName) {
+    alert(`Viewing file: ${fileName}`);
+};
+
+// Edit content
+window.editContent = function(contentId) {
+    alert(`Editing content ID: ${contentId}`);
+};
+
+// Delete content
+window.deleteContent = function(contentId) {
+    let contents = JSON.parse(localStorage.getItem("contents")) || [];
+    contents = contents.filter(content => content.id !== contentId);
+    localStorage.setItem("contents", JSON.stringify(contents));
+
+    // Remove content row from table
+    const contentTableBody = document.querySelector("#manage-content-table tbody");
+    const rows = contentTableBody.querySelectorAll("tr");
+    rows.forEach(row => {
+        if (row.querySelector("td").textContent == contentId) {
+            contentTableBody.removeChild(row);
+        }
+    });
+};
+
+        
+        
+        
+    </script>
+</body>
+</html>
