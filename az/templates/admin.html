@@ -36,7 +36,7 @@
                 <ul>
                     <li><a href="#" data-target="#dashboard">Dashboard</a></li>
                     <li><a href="#" data-target="#projects">Project Management</a></li>
-                    <li><a href="#" data-target="#content">Content Management</a></li>
+                    
                     <li><a href="#" id="logout">Logout</a></li>
                 </ul>
             </nav>
@@ -117,44 +117,6 @@
                             <input type="file" id="content-file" accept=".pdf,.doc,.docx,.txt" required>
                             <button type="submit">Upload</button>
                         </form>
-                    </div>
-                </section>
-
-                <section id="content">
-                    <h1>Content Management</h1>
-                    <div class="content-options">
-                        <button id="upload-content">Upload Content</button>
-                        <button id="manage-content">Manage Content</button>
-                    </div>
-                    <div id="upload-form">
-                        <h2>Upload New Content</h2>
-                        <form id="upload-content-form">
-                            <label for="content-file">Select File:</label>
-                            <input type="file" id="content-file" accept=".pdf,.doc,.docx,.txt" required>
-                            <br>
-                            <label for="content-title">Title:</label>
-                            <input type="text" id="content-title" required>
-                            <br>
-                            <label for="content-description">Description:</label>
-                            <textarea id="content-description" required></textarea>
-                            <br>
-                            <button type="submit">Upload</button>
-                        </form>
-                    </div>
-                    <div id="manage-content-table">
-                        <h2>Manage Content</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Description</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="content-tbody">
-                                <!-- Content items will be dynamically added here -->
-                            </tbody>
-                        </table>
                     </div>
                 </section>
             </div>
@@ -353,144 +315,6 @@ window.deleteProject = function(projectId) {
         }
     });
 };
-document.addEventListener("DOMContentLoaded", function() {
-    // Toggle upload and manage sections
-    const uploadContentBtn = document.getElementById("upload-content");
-    const manageContentBtn = document.getElementById("manage-content");
-    const uploadForm = document.getElementById("upload-form");
-    const manageContentTable = document.getElementById("manage-content-table");
-
-    uploadContentBtn.addEventListener("click", function() {
-        uploadForm.style.display = "block";
-        manageContentTable.style.display = "none";
-    });
-
-    manageContentBtn.addEventListener("click", function() {
-        manageContentTable.style.display = "block";
-        uploadForm.style.display = "none";
-    });
-
-    // Handle content form submission
-    document.getElementById("upload-content-form").addEventListener("submit", function(event) {
-        event.preventDefault();
-        const contentFile = document.getElementById("content-file").files[0];
-        const contentTitle = document.getElementById("content-title").value.trim();
-        const contentDescription = document.getElementById("content-description").value.trim();
-
-        if (contentFile && contentTitle && contentDescription) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const fileContent = e.target.result;
-                const newContent = {
-                    id: Date.now(),
-                    title: contentTitle,
-                    description: contentDescription,
-                    fileName: contentFile.name,
-                    fileContent: fileContent
-                };
-
-                // Save content data to localStorage
-                let contents = JSON.parse(localStorage.getItem("contents")) || [];
-                contents.push(newContent);
-                localStorage.setItem("contents", JSON.stringify(contents));
-
-                // Update the content table
-                addContentToTable(newContent);
-
-                // Reset form fields
-                document.getElementById("content-file").value = ""; // Clear the file input
-                document.getElementById("content-title").value = "";
-                document.getElementById("content-description").value = "";
-            };
-            reader.readAsDataURL(contentFile);
-        } else {
-            alert("Please fill out all the fields.");
-        }
-    });
-
-    // Load contents from localStorage and populate the table
-    const contents = JSON.parse(localStorage.getItem("contents")) || [];
-    contents.forEach(content => {
-        addContentToTable(content);
-    });
-
-    function addContentToTable(content) {
-        const contentTableBody = document.getElementById("content-tbody");
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td contenteditable="false">${content.title}</td>
-            <td contenteditable="false">${content.description}</td>
-            <td>
-                <button class="view-btn" onclick="viewFile('${content.fileContent}', '${content.fileName}')">View</button>
-                <button class="edit-btn" onclick="editContent(${content.id}, this)">Edit</button>
-                <button class="delete-btn" onclick="deleteContent(${content.id})">Delete</button>
-                <button class="save-btn" onclick="saveContent(${content.id}, this)" style="display: none;">Save</button>
-            </td>
-        `;
-        contentTableBody.appendChild(row);
-    }
-
-    // View content file
-    window.viewFile = function(fileContent, fileName) {
-        const link = document.createElement("a");
-        link.href = fileContent;
-        link.download = fileName;
-        link.target = "_blank";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
-    // Edit content
-    window.editContent = function(contentId, editButton) {
-        const row = editButton.closest('tr');
-        row.querySelectorAll('td[contenteditable]').forEach(td => td.setAttribute('contenteditable', 'true'));
-
-        // Show save button and hide edit button
-        editButton.style.display = 'none';
-        row.querySelector('.save-btn').style.display = 'inline';
-    };
-
-    // Save content
-    window.saveContent = function(contentId, saveButton) {
-        const row = saveButton.closest('tr');
-        const updatedTitle = row.children[0].textContent.trim();
-        const updatedDescription = row.children[1].textContent.trim();
-
-        // Update the content in localStorage
-        let contents = JSON.parse(localStorage.getItem("contents")) || [];
-        contents = contents.map(content => {
-            if (content.id === contentId) {
-                return { ...content, title: updatedTitle, description: updatedDescription };
-            }
-            return content;
-        });
-        localStorage.setItem("contents", JSON.stringify(contents));
-
-        // Make the cells non-editable again
-        row.querySelectorAll('td[contenteditable]').forEach(td => td.setAttribute('contenteditable', 'false'));
-
-        // Show edit button and hide save button
-        saveButton.style.display = 'none';
-        row.querySelector('.edit-btn').style.display = 'inline';
-    };
-
-    // Delete content
-    window.deleteContent = function(contentId) {
-        let contents = JSON.parse(localStorage.getItem("contents")) || [];
-        contents = contents.filter(content => content.id !== contentId);
-        localStorage.setItem("contents", JSON.stringify(contents));
-
-        // Remove content row from table
-        const contentTableBody = document.getElementById("content-tbody");
-        const rows = contentTableBody.querySelectorAll("tr");
-        rows.forEach(row => {
-            if (parseInt(row.querySelector("td").textContent) === contentId) {
-                contentTableBody.removeChild(row);
-            }
-        });
-    };
-});
 
     </script>
 </body>
