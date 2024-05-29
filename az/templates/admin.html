@@ -207,45 +207,51 @@
                 window.location.href = "/s1/api/signup"; // Redirect to logout endpoint
             });
 
-            // Upload project form toggle
-            const uploadProjectBtn = document.getElementById("upload-project-btn");
-            const uploadProjectForm = document.getElementById("upload-project-form");
+           // Upload project form toggle
+const uploadProjectBtn = document.getElementById("upload-project-btn");
+const uploadProjectForm = document.getElementById("upload-project-form");
 
-            uploadProjectBtn.addEventListener("click", function() {
-                uploadProjectForm.style.display = "block";
-            });
+uploadProjectBtn.addEventListener("click", function() {
+    uploadProjectForm.style.display = "block";
+});
 
-            // Handle project upload form submission
-            document.getElementById("upload-project-form-data").addEventListener("submit", function(event) {
-                event.preventDefault();
-                const projectName = document.getElementById("project-name").value;
-                const projectOwner = document.getElementById("project-owner").value;
-                const contentFile = document.getElementById("content-file").files[0];
+// Handle project upload form submission
+document.getElementById("upload-project-form-data").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const projectName = document.getElementById("project-name").value;
+    const projectOwner = document.getElementById("project-owner").value;
+    const contentFile = document.getElementById("content-file").files[0];
 
-                const newProject = {
-                    id: Date.now(),
-                    name: projectName,
-                    owner: projectOwner,
-                    fileName: contentFile.name
-                };
+    const newProject = {
+        id: Date.now(),
+        name: projectName,
+        owner: projectOwner,
+        fileName: contentFile.name
+    };
 
-                // Save project data to localStorage
-                let projects = JSON.parse(localStorage.getItem("projects")) || [];
-                projects.push(newProject);
-                localStorage.setItem("projects", JSON.stringify(projects));
+    // Save project data to localStorage
+    let projects = JSON.parse(localStorage.getItem("projects")) || [];
+    projects.push(newProject);
+    localStorage.setItem("projects", JSON.stringify(projects));
 
-                // Update the project table
-                addProjectToTable(newProject);
+    // Update the project table
+    addProjectToTable(newProject);
 
-                uploadProjectForm.style.display = "none";
-                document.getElementById("upload-project-form-data").reset();
-            });
+    // Update the total number of projects
+    updateTotalProjects();
 
-           // Load projects from localStorage and populate the table
+    uploadProjectForm.style.display = "none";
+    document.getElementById("upload-project-form-data").reset();
+});
+
+// Load projects from localStorage and populate the table
 const projects = JSON.parse(localStorage.getItem("projects")) || [];
 projects.forEach(project => {
     addProjectToTable(project);
 });
+
+// Update the total number of projects on initial load
+updateTotalProjects();
 
 function addProjectToTable(project) {
     const projectTableBody = document.querySelector("#projects-table tbody");
@@ -255,7 +261,6 @@ function addProjectToTable(project) {
         <td contenteditable="false">${project.name}</td>
         <td contenteditable="false">${project.owner}</td>
         <td>
-           
             <button class="edit-btn" onclick="editProject(${project.id}, this)">Edit</button>
             <button class="delete-btn" onclick="deleteProject(${project.id})">Delete</button>
             <button class="save-btn" onclick="saveProject(${project.id}, this)" style="display: none;">Save</button>
@@ -264,7 +269,10 @@ function addProjectToTable(project) {
     projectTableBody.appendChild(row);
 }
 
-
+function updateTotalProjects() {
+    const projects = JSON.parse(localStorage.getItem("projects")) || [];
+    document.getElementById("total-projects").textContent = projects.length;
+}
 
 // Edit project
 window.editProject = function(projectId, editButton) {
@@ -298,6 +306,9 @@ window.saveProject = function(projectId, saveButton) {
     // Show edit button and hide save button
     saveButton.style.display = 'none';
     row.querySelector('.edit-btn').style.display = 'inline';
+
+    // Update the total number of projects
+    updateTotalProjects();
 };
 
 // Delete project
@@ -314,6 +325,9 @@ window.deleteProject = function(projectId) {
             projectTableBody.removeChild(row);
         }
     });
+
+    // Update the total number of projects
+    updateTotalProjects();
 };
 
     </script>
