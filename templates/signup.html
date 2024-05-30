@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>LOGIN</title>
+    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="img/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="logo" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+25&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">     
+</head>
+<body>
+    <div>
+        <nav>
+            <h1 class="head">VIRTUAL SCIENCE EXPO</h1> 
+           
+            <ul>
+                <li id="home" class="box"><a href="/"> Home</a></li>
+                <li id="login" class="box"><a href="/s1/api/signup">Login</a></li>
+                <li id="about" class="box"><a href="/s1/api/about">About Us</a></li>
+                <li id="contact" class="box"><a  href="/s1/api/contact">Contact Us</a></li>
+               
+            </ul>
+        </nav>
+        </div> 
+   
+    <img id="signlogo" src="{{url_for('static',filename='logo.jpg')}}" alt="logo">
+    
+    <div class="container">
+        
+        <form id="login-form">
+            
+            <h2>Login</h2>
+            <label for="USERNAME">Username/Email</label><br>
+            <input type="text" id="USERNAME" name="USERNAME" required><br>
+            <label type="PASSWORD">Password</label><br>
+            <input type="password" id="PASSWORD" name="PASSWORD" required><br>
+            <button type="submit" id="sign">Login</button><br>
+            <p>Don't have an account? <a id="slink" href="#" onclick="toggleForm()">Sign Up</a></p>
+            
+        </form>
+        
+        <form id="signup-form" style="display: none;">
+            
+            
+                <h2 class="header">SIGN UP</h2>
+            
+                <label for="username">Username</label>
+                <br>
+                <input type="text" id="username" name="username" required>
+                <br>
+                <label for="Email" >Email </label>
+                <br>
+                <input type="email" id="email" name="email" required>
+                <br>
+                <label for="password">Password</label>
+                <br>
+                <input type="password" id="password" name="password" required>
+                <div id="password-error" class="error-message"></div>
+                <br>
+                <label for="confirmpassword">Confirm Password</label>
+                <br>
+                <input type="password" id="confirmpassword" name="confirmpassword" required>
+                <div id="confirmpassword-error" class="error-message"></div>
+                <br>
+                <button type="submit" id="sign">SIGN UP</button>
+            </form>
+           
+
+    </div>
+    <script >
+
+        function toggleForm() {
+    var loginForm = document.getElementById("login-form");
+    var signupForm = document.getElementById("signup-form");
+
+    if (loginForm.style.display === "none"){
+        loginForm.style.display = "block";
+        signupForm.style.display = "none";
+    } else {
+        loginForm.style.display = "none";
+        signupForm.style.display = "block";
+    }
+}
+// Get references to the forms and inputs
+const loginForm = document.getElementById("login-form");
+const signupForm = document.getElementById("signup-form");
+
+// Event listener for signup form submission
+signupForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+    // Get values from the signup form
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    // Store the data locally (you can use localStorage or cookies)
+    localStorage.setItem("userData", JSON.stringify({ username, email, password }));
+    
+});
+
+// Event listener for login form submission
+loginForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+    // Get values from the login form
+    const username = document.getElementById("USERNAME").value;
+    const password = document.getElementById("PASSWORD").value;
+    // Retrieve the stored user data
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    // Validate the credentials
+    if (userData && userData.username === username && userData.password === password) {
+        // Login successful
+        // Redirect to the admin page after successful login
+        window.location.href = "admin.html?username=" + encodeURIComponent(username);
+
+        window.location.href ="/s1/api/admin?username=" + encodeURIComponent(username); // Redirect to dashboard after login
+    } else {
+        // Login failed
+        alert("Invalid username or password");
+    }
+});
+
+
+/// JS fos signup page
+
+document.getElementById('signup-form').addEventListener('submit', function(event) {event.preventDefault();
+
+//clear existing error message
+var errormessages = document.querySelectorAll('.error-message');
+errormessages.forEach(function(element) {
+    element.textcontent = '';
+});
+
+//Get from values
+
+var username = document.getElementById('username').value;
+var email = document.getElementById('email').value;
+var password = document.getElementById('password').value;
+var confirmpassword = document.getElementById('confirmpassword').value;
+
+//validation check up - If Fields are empty
+
+if (username.trim() === '' || email.trim() === '' || password.trim() === '' || confirmpassword.trim() === '') {
+    showError('please fill in all fields');
+    return;
+}
+
+//check if password match
+if(password !== confirmpassword) {
+    showError('confirmpassword', 'Password do not match');
+    return;
+}else {
+    showError('confirmpassword', '', true);
+}
+
+// check password length
+if(password.length < 9) {
+    showError('password', 'Password must be at least 9 characters long');
+    return;
+}else {
+    showError('password', '', true);
+}
+
+// check for special characters in password
+var specialchars = /[!@#$%^&*(),.?":{}|<>]/;
+if (!specialchars.test(password)) {
+    showError('password', 'Password must contain at least one special character');
+    return;
+}else {
+    showError('password', '', true);
+}
+
+//check for atleast one capital letter in password
+var capitalletter = /[A-Z]/;
+if(!capitalletter.test(password)){
+    showError('password', 'Password must contain at least one capital letter');
+    return;
+}else {
+    showError('password', '', true);
+}
+
+//check for atleast one number in password
+var number = /[0-9]/;
+if(!number.test(password)){
+   showError('password', 'Passwors must contain atleast one number');
+   return;
+}else {
+    showError('password', '', true);
+}
+
+//Refreshing the page after submission
+window.location.reload()
+
+// log the form data to console
+
+console.log('Username:' , username);
+console.log('Email:' , email);
+console.log('Password:' , password);
+console.log('Confirm Password:' , confirmpassword);
+
+});
+
+function showError(inputID, errormessage, hide = false) {
+    var errorContainer = document.getElementById(inputID + '-error');
+    if(hide) {
+        errorContainer.textContent = '';
+    } else {
+    errorContainer.textContent = errormessage;
+    }
+}
+
+
+
+
+    </script>
+    
+</body>
+</html>

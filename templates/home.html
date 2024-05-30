@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>VIRTUAL SCIENCE EXPO</title>
+    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}" type="img/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+25&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap" rel="stylesheet"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+</head>
+<body>
+    <div>
+    <nav>
+        <h1 class="head">VIRTUAL SCIENCE EXPO</h1> 
+       
+        <ul>
+            <li id="home" class="box"><a href="/"> Home</a></li>
+            <li id="login" class="box"><a href="/s1/api/signup">Login</a></li>
+            <li id="about" class="box"><a href="/s1/api/about">About Us</a></li>
+            <li id="contact" class="box"><a href="/s1/api/contact">Contact Us</a></li>
+           
+        </ul>
+    </nav>
+    </div>  
+ 
+<div id="intro2">
+    <img id="logo" src="{{url_for('static',filename='logo.jpg')}}" alt="logo">
+    <h2 id="welcome">Welcome to the virtual science exploration and innovation!Our webpage is dedicated to empowering individuals like you to embrace their scientific journey and shine brightly in the world of discovery.Wheather you'r a seasoned researcher,a budding scientist or simply curious about the wonders of science ,this platfrom is designed to inspire,educate and support your quest for knowledge. </h2>
+</div>
+<div id="intro">
+    <h1>Embrace Your Scientific Journey And Shine </h1>
+</div>
+<div >
+    <h2 id="offers">What We Offers</h2>
+    <div class="offer-box" id="inspiring" onclick="toggleContent('inspiring')">
+        <h3>Inspiring Content</h3>
+        <div class="info" style="display: none;">
+            <p>Dive into engaging articles, videos, and interactive resources that showcase the latest breakthroughs, fascinating experiments, and thought-provoking insights across various scientific disciplines.</p>
+        </div>
+    </div>
+    <div class="offer-box" id="educational" onclick="toggleContent('educational')">
+        <h3>Educational Opportunities</h3>
+        <div class="info" style="display: none;">
+            <p>Explore a plethora of learning resources, from online courses and webinars to virtual labs and workshops, tailored to enhance your understanding and skills in science and technology.</p>
+        </div>
+    </div>
+    <div class="offer-box" id="community" onclick="toggleContent('community')">
+        <h3>Community Engagement</h3>
+        <div class="info" style="display: none;">
+            <p>Connect with fellow science enthusiasts, researchers, and experts from around the globe. Share ideas, collaborate on projects, and engage in meaningful discussions to expand your scientific horizons.</p>
+        </div>
+    </div>
+    <div class="offer-box" id="career" onclick="toggleContent('career')">
+        <h3>Career Development</h3>
+        <div class="info" style="display: none;">
+            <p>Access valuable resources and guidance to navigate your scientific career path with confidence. From tips on resume building to networking opportunities and job postings, we're here to support your professional growth.</p>
+        </div>
+    </div>
+</div>
+<div >
+    <h1 class="join">
+        Join Us Today
+    </h1>
+<h3 class="joinus">Embark on your scientific journey with us and unlock a world of possiblities.Embrace the wonder of discovery,the thrill of exprimentation, and joy of sharing knowledge.Together,let's illumitate the path to a brighter, more scientifically literate future. </h3>
+</div>
+<div id="contact-us">
+    <h2>Contact Us</h2>
+    <p>If you have any questions or inquiries, feel free to reach out to us:</p>
+    <ul class="address">
+        <li>Email: info@virtualscienceexpo.com</li><br>
+        <li>Phone: +1 (123) 456-7890</li><br>
+        <li>Address: 123,Chennai,India</li>
+    </ul>
+    <form action="#" method="post">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message" required></textarea><br>
+        <input type="submit" value="Submit">
+    </form>
+    <div>
+        <h2 >©virtualscienceexpo2024</h2>
+        <div>
+        <a href="#" id="face" class="fa fa-facebook"></a>
+        <a href="#" id="tweet" class="fa fa-twitter"></a>
+        <a href="#" id="linkedin" class="fa fa-linkedin"></a>
+        </div>
+        </div>
+    
+</div>
+
+  
+
+
+
+<script>
+     function toggleContent(id){
+            var content = document.querySelector("#" + id + " .info");
+            content.style.display = (content.style.display === "none") ? "block" : "none";
+        }
+    
+
+    window.addEventListener("scroll",function(){
+        var intro2 = document.getElementById("intro2")
+        var intro2position = intro2.getBoundingClientRect().top;
+        var screenposition = window.innerHeight/1.5;
+        if(intro2position < screenposition){
+            intro2.classList.add("show");
+        }
+    });
+ 
+   
+</script>
+
+</body>
+</html>
