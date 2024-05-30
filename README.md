@@ -1,4 +1,4 @@
-
+## Title : Virtual Science Expo
 ## Team collaboration 
 - *Sarveen B* - Frontend
 - *Swetha B* - Backend
