@@ -8,6 +8,10 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return render_template("home.html")
+@app.route('/chat')
+def chat():
+    return render_template("chat.html")
+
 
 @app.route('/s1/api/signup')
 def user_signup():
