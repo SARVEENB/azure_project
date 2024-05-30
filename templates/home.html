@@ -75,7 +75,7 @@
         <li>Phone: +1 (123) 456-7890</li><br>
         <li>Address: 123,Chennai,India</li>
     </ul>
-    <form action="#" method="post">
+    <form action="#" method="post" onsubmit="resetForm(event)">
         <label for="name">Name:</label><br>
         <input type="text" id="name" name="name" required><br>
         <label for="email">Email:</label><br>
@@ -114,6 +114,12 @@
             intro2.classList.add("show");
         }
     });
+    function resetForm(event) {
+            event.preventDefault(); // Prevent the form from submitting
+            event.target.reset(); // Reset the form fields
+            // Optionally, add a message to confirm form submission
+            alert('Your message has been sent successfully!');
+        }
  
    
 </script>
