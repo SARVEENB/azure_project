@@ -8,7 +8,7 @@
 
 ## demo url https://virtualscienceexpo.azurewebsites.net/
 
-## demo vedio url
+## demo vedio url : https://www.youtube.com/watch?v=oNvjnwoZ2YY
 
 ## Title Description
 The *Virtual Science Expo* is a cutting-edge platform designed to inspire and educate students, educators, and science enthusiasts through interactive and immersive experiences. This expo showcases a diverse range of scientific projects, experiments, and presentations across various fields of science, all accessible from the comfort of your home.
