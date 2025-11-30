@@ -58,9 +58,6 @@ Contact
 For any inquiries or further information, please contact:
 
 - *Sarveen B*: sarveenb2002@outlook.com
-- *Swetha B*: swetha.b0312@gmail.com
-- *Jaisree N*: jaisreen03@gmail.com
-- *Leesiya R*: leesiya.lee.293@gmail.com
 
 # screen short
 ![image](https://github.com/SARVEENB/azure_project/assets/165760561/8515317e-3cff-44f7-bca5-920d69be75c2)
