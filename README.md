@@ -1,7 +1,4 @@
 ## Title : Virtual Science Expo
-## Team collaboration 
-- *Sarveen B* - Frontend
-
 
 ## demo url https://virtualscienceexpo.azurewebsites.net/
 
