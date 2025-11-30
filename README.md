@@ -1,9 +1,6 @@
 ## Title : Virtual Science Expo
 ## Team collaboration 
 - *Sarveen B* - Frontend
-- *Swetha B* - Backend
-- *Jaisree N* - Cloud Service Integration
-- *Leesiya R* - README File Update, Voice Over
 
 
 ## demo url https://virtualscienceexpo.azurewebsites.net/
